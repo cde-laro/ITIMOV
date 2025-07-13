@@ -1,0 +1,29 @@
+services:
+  back:
+    build:
+      context: ./back
+    container_name: nestjs-app
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongodb
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017/movies
+
+  front:
+    build:
+      context: ./front
+    ports:
+      - "3001:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:3000
+
+  mongodb:
+    image: mongo:7
+    container_name: mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+volumes:
+  mongo_data:
